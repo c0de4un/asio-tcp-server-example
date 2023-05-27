@@ -39,9 +39,10 @@ namespace app
             // CONSTRUCTOR & DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            WinServer::WinServer()
+            WinServer::WinServer(boost::asio::io_context& context)
                 :
-                Server()
+                Server(),
+                mContext(context)
             {
                 std::cout << "WinServer::constructor\n";
             }
@@ -57,9 +58,9 @@ namespace app
             // WinServer.PUBLIC.METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            void WinServer::Create()
+            void WinServer::Create(boost::asio::io_context& context)
             {
-                WinServer* const winServer_ptr(new WinServer());
+                WinServer* const winServer_ptr(new WinServer(context));
 
                 std::shared_ptr<app::server::core::Server> server_ptr(
                     static_cast<app::server::core::Server*>(winServer_ptr)
@@ -94,6 +95,9 @@ namespace app
             void WinServer::_stop()
             {
                 std::cout << "WinServer::_stop\n";
+
+                if (!mContext.stopped())
+                    mContext.stop(); // async
             }
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

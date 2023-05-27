@@ -17,6 +17,10 @@
 // HEADER
 #include <app/server/windows/main.hpp>
 
+// DEBUG
+#include <cassert>
+#include <exception>
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // MAIN
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -25,8 +29,31 @@ int main()
 {
     std::cout << "Starting Windows Server . . .\n";
 
-    app::server::win::WinServer::Create();
+    boost::asio::io_context _context;
 
+    app::server::win::WinServer::Create(_context);
+    auto _server_ptr(app::server::core::Server::getInstance());
+
+    assert(_server_ptr.get() && "main: Server not created");
+
+    // Guarded block
+    try
+    {
+        if (!_server_ptr->Start())
+            _context.run();
+        else
+            std::cout << "main: Failed to start\n";
+    }
+    catch (const std::exception& _exception)
+    {
+        std::cout << "ERROR: main: " << _exception.what() << "\n";
+    }
+    catch (...)
+    {
+        std::cout << "ERROR: main: uknonwn error\n";
+    }
+
+    _server_ptr->Stop();
     std::cout << "Stopping Windows Server . . .\n";
 
     app::server::core::Server::Terminate();

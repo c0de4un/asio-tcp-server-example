@@ -22,6 +22,11 @@
     #include <app/server/core/Server.hpp>
 #endif /// !APP_SERVER_CORE_HPP
 
+// Include asio
+#ifndef APP_SERVER_WIN_ASIO_HPP
+    #include <app/server/windows/asio.hpp>
+#endif /// !APP_SERVER_WIN_ASIO_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // WinServer
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -45,10 +50,16 @@ namespace app
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                // FIELDS
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                boost::asio::io_context& mContext;
+
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // CONSTRUCTOR
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-                explicit WinServer();
+                explicit WinServer(boost::asio::io_context& mContext);
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // METHODS
@@ -81,7 +92,7 @@ namespace app
                 // METHODS
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-                static void Create();
+                static void Create(boost::asio::io_context& context);
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // Server.METHODS

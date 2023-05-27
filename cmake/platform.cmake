@@ -7,6 +7,7 @@ if ( NOT DEFINED HEX_PLATFORM_DETECTED )
         set( PLATFORM "windows" )
         set( HEX_WINDOWS ON )
         add_definitions( -DHEX_WINDOWS=1 )
+        add_definitions( -D_WIN32_WINNT=0x0601 ) # Windows 7 Features. Required by Boost
     elseif ( ANDROID OR $CMAKE_SYSTEM_NAME STREQUAL "Android" )
         # Android
         set( PLATFORM "android" )

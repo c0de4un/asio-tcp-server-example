@@ -17,11 +17,17 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include STL memory
-#include <memory>
+// Include core::IClientConnection
+#ifndef APP_SERVER_CORE_I_CLIENT_CONNECTION_HXX
+    #include <app/server/core/IClientConnection.hxx>
+#endif /// !APP_SERVER_CORE_I_CLIENT_CONNECTION_HXX
 
-// Include STL atomic
+// Include STL
 #include <atomic>
+#include <map>
+#include <vector>
+#include <mutex>
+#include <memory>
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Server
@@ -41,6 +47,18 @@ namespace app
             class Server
             {
 
+            public:
+
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                // ALIASES
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                using connection_ptr = std::shared_ptr<IClientConnection>;
+
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
             private:
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -50,6 +68,11 @@ namespace app
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
                 static std::shared_ptr<Server> mInstance;
+
+                std::mutex                                        mConnectionsMutex;
+                std::vector<IClientConnection::id_t>              mAvailableConnectionsIDs;
+                std::vector<IClientConnection::id_t>              mReservedConnectionsIDs;
+                std::map<IClientConnection::id_t, connection_ptr> mClientConnections;
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // DELETED
@@ -77,6 +100,14 @@ namespace app
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
                 explicit Server();
+
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                // METHODS
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                IClientConnection::id_t generateClientConnectionID();
+                void releaseClientConnectionID(const IClientConnection::id_t);
+                void storeClientConnection(connection_ptr&);
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

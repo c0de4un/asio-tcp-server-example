@@ -15,17 +15,12 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // HEADER
-#ifndef APP_SERVER_CORE_CLIENT_CONNECTION_HPP
-    #include <app/server/core/ClientConnection.hpp>
-#endif /// !APP_SERVER_CORE_CLIENT_CONNECTION_HPP
-
-// Include core::Server
-#ifndef APP_SERVER_CORE_HPP
-    #include <app/server/core/Server.hpp>
-#endif /// !APP_SERVER_CORE_HPP
+#ifndef APP_SERVER_WIN_CLIENT_CONNECTION_HPP
+    #include <app/server/windows/WinClientConnection.hpp>
+#endif /// !APP_SERVER_WIN_CLIENT_CONNECTION_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// ClientConnection
+// WinClientConnection
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace app
@@ -34,7 +29,7 @@ namespace app
     namespace server
     {
 
-        namespace core
+        namespace win
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -43,21 +38,29 @@ namespace app
             // CONSTRUCTOR & DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            ClientConnection::ClientConnection(const ClientConnection::id_t id)
+            WinClientConnection::WinClientConnection(
+                const app::server::core::ClientConnection::id_t id
+            )
                 :
-                mID(id)
+                ClientConnection(id)
             {
             }
 
-            ClientConnection::~ClientConnection() = default;
+            WinClientConnection::~WinClientConnection() = default;
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // IClientConnection: GETTERS & SETTERS
+            // WinClientConnection.PUBLIC.METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            ClientConnection::id_t ClientConnection::getID() const noexcept
+            WinClientConnection* WinClientConnection::Create(
+                const app::server::core::ClientConnection::id_t id
+            ) {
+                return new WinClientConnection(id);
+            }
+
+            void WinClientConnection::Confirm()
             {
-                return mID;
+                // @TODO: WinClientConnection::Confirm()
             }
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

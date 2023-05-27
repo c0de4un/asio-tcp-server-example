@@ -8,8 +8,8 @@
  * SOFTWARE.
 **/
 
-#ifndef APP_SERVER_CORE_CLIENT_CONNECTION_HPP
-#define APP_SERVER_CORE_CLIENT_CONNECTION_HPP
+#ifndef APP_SERVER_WIN_CLIENT_CONNECTION_HPP
+#define APP_SERVER_WIN_CLIENT_CONNECTION_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -17,13 +17,13 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include IClientConnection
-#ifndef APP_SERVER_CORE_I_CLIENT_CONNECTION_HXX
-    #include <app/server/core/IClientConnection.hxx>
-#endif /// !APP_SERVER_CORE_I_CLIENT_CONNECTION_HXX
+// Include core::ClientConnection
+#ifndef APP_SERVER_CORE_CLIENT_CONNECTION_HPP
+    #include <app/server/core/ClientConnection.hpp>
+#endif /// !APP_SERVER_CORE_CLIENT_CONNECTION_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// ClientConnection
+// WinClientConnection
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace app
@@ -32,12 +32,12 @@ namespace app
     namespace server
     {
 
-        namespace core
+        namespace win
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            class ClientConnection : public IClientConnection
+            class WinClientConnection final : public app::server::core::ClientConnection
             {
 
             private:
@@ -45,25 +45,19 @@ namespace app
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                // DELETED
-                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-                ClientConnection(const ClientConnection&)            = delete;
-                ClientConnection& operator=(const ClientConnection&) = delete;
-                ClientConnection(ClientConnection &&)                = delete;
-                ClientConnection& operator=(ClientConnection &&)     = delete;
-
-                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            protected:
-
-                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // CONSTRUCTOR
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-                explicit ClientConnection(const id_t);
+                explicit WinClientConnection(const app::server::core::ClientConnection::id_t);
+
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                // DELETED
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                WinClientConnection(const WinClientConnection&)            = delete;
+                WinClientConnection& operator=(const WinClientConnection&) = delete;
+                WinClientConnection(WinClientConnection &&)                = delete;
+                WinClientConnection& operator=(WinClientConnection &&)     = delete;
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -72,22 +66,18 @@ namespace app
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                // CONSTANTS
-                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-                const id_t mID;
-
-                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // DESTRUCTOR
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-                virtual ~ClientConnection();
+                virtual ~WinClientConnection();
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                // IClientConnection: GETTERS & SETTERS
+                // METHODS
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-                virtual id_t getID() const noexcept final;
+                static WinClientConnection* Create(const app::server::core::ClientConnection::id_t);
+
+                void Confirm();
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -103,4 +93,4 @@ namespace app
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif /// !APP_SERVER_CORE_CLIENT_CONNECTION_HPP
+#endif /// !APP_SERVER_WIN_CLIENT_CONNECTION_HPP

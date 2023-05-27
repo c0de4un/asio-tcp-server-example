@@ -90,6 +90,63 @@ namespace app
             }
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // Server.PRIVATE.METHODS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            IClientConnection::id_t Server::generateClientConnectionID()
+            {
+                IClientConnection::id_t id(0);
+
+                std::unique_lock<std::mutex> lock(mConnectionsMutex);
+
+                if (!mAvailableConnectionsIDs.empty())
+                {
+                    id = mAvailableConnectionsIDs.back();
+                    mAvailableConnectionsIDs.pop_back();
+                }
+
+                if (!id)
+                {
+                    const auto reservedCount(mReservedConnectionsIDs.size());
+                    if (reservedCount > mReservedConnectionsIDs.max_size() - 1)
+                        return 0;
+
+                    id = static_cast<IClientConnection::id_t>(reservedCount + 1);
+                }
+
+                mReservedConnectionsIDs.push_back(id);
+
+                return id;
+            }
+
+            void Server::releaseClientConnectionID(const IClientConnection::id_t id)
+            {
+                std::unique_lock<std::mutex> lock(mConnectionsMutex);
+
+                const auto end_iter(mReservedConnectionsIDs.cend());
+                auto iter(mReservedConnectionsIDs.begin());
+                while (iter != end_iter)
+                {
+                    if ((*iter) == id)
+                    {
+                        mReservedConnectionsIDs.erase(iter);
+                        break;
+                    }
+
+                    iter++;
+                }
+
+                mAvailableConnectionsIDs.push_back(id);
+            }
+
+            void Server::storeClientConnection(connection_ptr& pConnection)
+            {
+                std::unique_lock<std::mutex> lock(mConnectionsMutex);
+
+                mClientConnections[pConnection->getID()] = pConnection;
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         }
 

@@ -35,6 +35,7 @@ set( SERVER_WIN_HEADERS
     "${SERVER_WIN_PUBLIC_DIR}asio.hpp"
     "${SERVER_WIN_PUBLIC_DIR}main.hpp"
     "${SERVER_WIN_PUBLIC_DIR}WinServer.hpp"
+    "${SERVER_WIN_PUBLIC_DIR}WinClientConnection.hpp"
 )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -44,6 +45,7 @@ set( SERVER_WIN_HEADERS
 set( SERVER_WIN_SOURCES
     "${SERVER_WIN_PRIVATE_DIR}main.cpp"
     "${SERVER_WIN_PRIVATE_DIR}WinServer.cpp"
+    "${SERVER_WIN_PRIVATE_DIR}WinClientConnection.cpp"
 )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

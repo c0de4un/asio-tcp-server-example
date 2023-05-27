@@ -20,6 +20,11 @@
 // Include STL iostream
 #include <iostream>
 
+// Include WinClientConnection
+#ifndef APP_SERVER_WIN_CLIENT_CONNECTION_HPP
+    #include <app/server/windows/WinClientConnection.hpp>
+#endif /// !APP_SERVER_WIN_CLIENT_CONNECTION_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // WinServer
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -39,10 +44,15 @@ namespace app
             // CONSTRUCTOR & DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            WinServer::WinServer(boost::asio::io_context& context)
+            WinServer::WinServer(boost::asio::io_context& context, const boost::asio::ip::port_type port)
                 :
                 Server(),
-                mContext(context)
+                mContext(context),
+                mAcceptor(
+                    context,
+                    boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port)
+                ),
+                mPort(port)
             {
                 std::cout << "WinServer::constructor\n";
             }
@@ -58,9 +68,9 @@ namespace app
             // WinServer.PUBLIC.METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            void WinServer::Create(boost::asio::io_context& context)
+            void WinServer::Create(boost::asio::io_context& context, const boost::asio::ip::port_type in_port)
             {
-                WinServer* const winServer_ptr(new WinServer(context));
+                WinServer* const winServer_ptr(new WinServer(context, in_port));
 
                 std::shared_ptr<app::server::core::Server> server_ptr(
                     static_cast<app::server::core::Server*>(winServer_ptr)
@@ -78,6 +88,8 @@ namespace app
 
                 mStop.store(false);
 
+
+
                 return true;
             }
 
@@ -91,6 +103,60 @@ namespace app
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // WinServer.PRIVATE.METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            void WinServer::_waitForCLient()
+            {
+                if (mStop)
+                    return;
+
+                mAcceptor.async_accept(
+                    [this](std::error_code ec, boost::asio::ip::tcp::socket socket)
+                    {
+                        if (mStop)
+                            return;
+
+                        if (ec)
+                        {
+                            std::cout << "ERROR: WinServer::_waitForCLient: " << ec.message() << "\n";
+                        }
+                        else
+                        {
+                            const auto _id(Server::generateClientConnectionID());
+                            if (!_id)
+                            {
+                                std::cout << "WinServer::_waitForCLient: connections limit has been reached\n";
+                                socket.close();
+
+                                if (!mStop)
+                                    _waitForCLient();
+
+                                return;
+                            }
+
+                            WinClientConnection* winClientConnection_ptr(nullptr);
+                            try
+                            {
+                                winClientConnection_ptr = WinClientConnection::Create(_id);
+                            }
+                            catch (...)
+                            {
+                                std::cout << "WinServer::_waitForCLient: failed to create WinClientConnection\n";
+                                Server::releaseClientConnectionID(_id);
+                            }
+
+                            Server::connection_ptr _connection_ptr(
+                                static_cast<app::server::core::IClientConnection*>(winClientConnection_ptr)
+                            );
+                            Server::storeClientConnection(_connection_ptr);
+
+                            winClientConnection_ptr->Confirm();
+                        }
+
+                        if (!mStop)
+                            _waitForCLient();
+                    }
+                );
+            }
 
             void WinServer::_stop()
             {

@@ -31,7 +31,7 @@ int main()
 
     boost::asio::io_context _context;
 
-    app::server::win::WinServer::Create(_context);
+    app::server::win::WinServer::Create(_context, 8080);
     auto _server_ptr(app::server::core::Server::getInstance());
 
     assert(_server_ptr.get() && "main: Server not created");

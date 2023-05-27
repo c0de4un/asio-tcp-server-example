@@ -53,18 +53,20 @@ namespace app
                 // FIELDS
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-                boost::asio::io_context& mContext;
+                boost::asio::io_context&       mContext;
+                boost::asio::ip::tcp::acceptor mAcceptor;
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // CONSTRUCTOR
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-                explicit WinServer(boost::asio::io_context& mContext);
+                explicit WinServer(boost::asio::io_context&, const boost::asio::ip::port_type);
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // METHODS
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+                void _waitForCLient();
                 void _stop();
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -83,6 +85,12 @@ namespace app
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                // CONSTANTS
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                const boost::asio::ip::port_type mPort;
+
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // DESTRUCTOR
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -92,7 +100,7 @@ namespace app
                 // METHODS
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-                static void Create(boost::asio::io_context& context);
+                static void Create(boost::asio::io_context&, const boost::asio::ip::port_type);
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // Server.METHODS

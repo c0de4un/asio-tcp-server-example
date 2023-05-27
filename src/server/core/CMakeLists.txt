@@ -19,8 +19,9 @@ set( SERVER_CORE_PRIVATE_DIR "${SERVER_CORE_DIR}/private/app/server/core/" )
 # HEADERS
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
 set( SERVER_CORE_HEADERS
+    "${SERVER_CORE_PUBLIC_DIR}IClientConnection.hxx"
+    "${SERVER_CORE_PUBLIC_DIR}ClientConnection.hpp"
     "${SERVER_CORE_PUBLIC_DIR}Server.hpp"
 )
 
@@ -29,6 +30,7 @@ set( SERVER_CORE_HEADERS
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 set( SERVER_CORE_SOURCES
+    "${SERVER_CORE_PRIVATE_DIR}ClientConnection.cpp"
     "${SERVER_CORE_PRIVATE_DIR}Server.cpp"
 )
 

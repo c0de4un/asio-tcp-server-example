@@ -29,6 +29,7 @@ set( SERVER_WIN_PRIVATE_DIR "${SERVER_WIN_DIR}/private/app/server/windows/" )
 
 set( SERVER_WIN_HEADERS
     "${SERVER_WIN_PUBLIC_DIR}main.hpp"
+    "${SERVER_WIN_PUBLIC_DIR}WinServer.hpp"
 )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -37,6 +38,7 @@ set( SERVER_WIN_HEADERS
 
 set( SERVER_WIN_SOURCES
     "${SERVER_WIN_PRIVATE_DIR}main.cpp"
+    "${SERVER_WIN_PRIVATE_DIR}WinServer.cpp"
 )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

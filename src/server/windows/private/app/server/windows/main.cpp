@@ -16,7 +16,6 @@
 
 // HEADER
 #include <app/server/windows/main.hpp>
-#include <app/server/core/Server.hpp>
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // MAIN
@@ -26,7 +25,11 @@ int main()
 {
     std::cout << "Starting Windows Server . . .\n";
 
+    app::server::win::WinServer::Create();
+
     std::cout << "Stopping Windows Server . . .\n";
+
+    app::server::core::Server::Terminate();
 
     std::cout << "Press any key to exit . . .\n";
     std::cin.get();

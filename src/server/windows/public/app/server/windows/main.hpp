@@ -26,6 +26,9 @@ static constexpr const int OK_RESULT = 0;
 // Include STL iostream
 #include <iostream>
 
+// Include app::server::win::WinServer
+#include <app/server/windows/WinServer.hpp>
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 #endif /// !APP_SERVER_WIN_MAIN_HPP

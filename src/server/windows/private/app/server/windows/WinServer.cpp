@@ -15,13 +15,13 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // HEADER
-#include <app/server/core/Server.hpp>
+#include <app/server/windows/WinServer.hpp>
 
 // Include STL iostream
 #include <iostream>
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Server
+// WinServer
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace app
@@ -30,63 +30,70 @@ namespace app
     namespace server
     {
 
-        namespace core
+        namespace win
         {
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // FIELDS
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            std::shared_ptr<Server> Server::mInstance(nullptr);
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             // CONSTRUCTOR & DESTRUCTOR
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            Server::Server()
+            WinServer::WinServer()
                 :
-                mStop(false)
+                Server()
             {
+                std::cout << "WinServer::constructor\n";
             }
 
-            Server::~Server() = default;
-
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // GETTERS & SETTERS
-            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-            void Server::setInstance(std::shared_ptr<Server>& pInstance) noexcept
+            WinServer::~WinServer()
             {
-                if (!mInstance.get())
-                    mInstance.swap(pInstance);
-            }
+                std::cout << "WinServer::destructor\n";
 
-            std::shared_ptr<Server> Server::getInstance() noexcept
-            {
-                return mInstance;
+                _stop();
             }
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-            // METHODS
+            // WinServer.PUBLIC.METHODS
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-            void Server::Terminate()
+            void WinServer::Create()
             {
-                std::cout << "Server::Terminate\n";
+                WinServer* const winServer_ptr(new WinServer());
 
-                mInstance.reset();
+                std::shared_ptr<app::server::core::Server> server_ptr(
+                    static_cast<app::server::core::Server*>(winServer_ptr)
+                );
+                app::server::core::Server::setInstance(server_ptr);
             }
 
-            bool Server::Start()
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // Server.PUBLIC.METHODS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            bool WinServer::Start()
             {
-                return false;
+                std::cout << "WinServer::Start\n";
+
+                mStop.store(false);
+
+                return true;
             }
 
-            void Server::Stop()
+            void WinServer::Stop()
             {
-                // void
+                std::cout << "WinServer::Stop\n";
+
+                mStop.store(true);
+            }
+
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            // WinServer.PRIVATE.METHODS
+            // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+            void WinServer::_stop()
+            {
+                std::cout << "WinServer::_stop\n";
             }
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

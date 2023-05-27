@@ -136,7 +136,7 @@ namespace app
                             WinClientConnection* winClientConnection_ptr(nullptr);
                             try
                             {
-                                winClientConnection_ptr = WinClientConnection::Create(_id);
+                                winClientConnection_ptr = WinClientConnection::Create(_id, mContext, std::move(socket));
                             }
                             catch (...)
                             {

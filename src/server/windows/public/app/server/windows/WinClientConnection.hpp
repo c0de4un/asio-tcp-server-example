@@ -22,6 +22,11 @@
     #include <app/server/core/ClientConnection.hpp>
 #endif /// !APP_SERVER_CORE_CLIENT_CONNECTION_HPP
 
+// Include asio
+#ifndef APP_SERVER_WIN_ASIO_HPP
+    #include <app/server/windows/asio.hpp>
+#endif /// !APP_SERVER_WIN_ASIO_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // WinClientConnection
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -45,10 +50,21 @@ namespace app
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                // FIELDS
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+                boost::asio::io_context&     mContext;
+                boost::asio::ip::tcp::socket mSocket;
+
+                // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // CONSTRUCTOR
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-                explicit WinClientConnection(const app::server::core::ClientConnection::id_t);
+                explicit WinClientConnection(
+                    const app::server::core::ClientConnection::id_t,
+                    boost::asio::io_context&,
+                    boost::asio::ip::tcp::socket
+                );
 
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                 // DELETED
@@ -75,7 +91,11 @@ namespace app
                 // METHODS
                 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-                static WinClientConnection* Create(const app::server::core::ClientConnection::id_t);
+                static WinClientConnection* Create(
+                    const app::server::core::ClientConnection::id_t,
+                    boost::asio::io_context&,
+                    boost::asio::ip::tcp::socket
+                );
 
                 void Confirm();
 

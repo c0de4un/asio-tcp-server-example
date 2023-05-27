@@ -19,6 +19,10 @@
     #include <app/server/windows/WinClientConnection.hpp>
 #endif /// !APP_SERVER_WIN_CLIENT_CONNECTION_HPP
 
+// Include STL
+#include <iostream>
+#include <string>
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // WinClientConnection
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -39,10 +43,14 @@ namespace app
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             WinClientConnection::WinClientConnection(
-                const app::server::core::ClientConnection::id_t id
+                    const app::server::core::ClientConnection::id_t id,
+                    boost::asio::io_context& _context,
+                    boost::asio::ip::tcp::socket _socket
             )
                 :
-                ClientConnection(id)
+                ClientConnection(id),
+                mContext(_context),
+                mSocket(std::move(_socket))
             {
             }
 
@@ -53,14 +61,32 @@ namespace app
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
             WinClientConnection* WinClientConnection::Create(
-                const app::server::core::ClientConnection::id_t id
+                const app::server::core::ClientConnection::id_t id,
+                boost::asio::io_context& _context,
+                boost::asio::ip::tcp::socket _socket
             ) {
-                return new WinClientConnection(id);
+                return new WinClientConnection(id, _context, std::move(_socket));
             }
 
             void WinClientConnection::Confirm()
             {
-                // @TODO: WinClientConnection::Confirm()
+                const std::string msg("Welcome to the Server");
+
+                boost::asio::async_write(
+                    mSocket,
+                    boost::asio::buffer(msg),
+                    [this](std::error_code ec, std::size_t length)
+                    {
+                        if (ec)
+                        {
+                            std::cout << "ERROR: WinClientConnection::Confirm: " << ec.message() << "\n";
+                        }
+                        else
+                        {
+                            std::cout << "WinClientConnection::Confirm: " << std::to_string(length) << " bytes sent\n";
+                        }
+                    }
+                );
             }
 
             // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

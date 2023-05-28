@@ -52,5 +52,6 @@ include( "${CMAKE_CURRENT_SOURCE_DIR}/cmake/find_libs.cmake" )
 add_subdirectory( "${CMAKE_CURRENT_SOURCE_DIR}/src/server" )
 
 # Application.Client
+add_subdirectory( "${CMAKE_CURRENT_SOURCE_DIR}/src/client" )
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

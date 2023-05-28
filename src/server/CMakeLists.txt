@@ -4,7 +4,7 @@
 # PROJECT
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-set( SERVER_VERSION 0.1.0 )
+set( SERVER_VERSION 1.0.0 )
 
 project( "Server" VERSION ${SERVER_VERSION} LANGUAGES C CXX )
 

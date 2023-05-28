@@ -39,7 +39,7 @@ int main()
     // Guarded block
     try
     {
-        if (!_server_ptr->Start())
+        if (_server_ptr->Start())
             _context.run();
         else
             std::cout << "main: Failed to start\n";

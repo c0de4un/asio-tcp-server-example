@@ -88,7 +88,7 @@ namespace app
 
                 mStop.store(false);
 
-
+                _waitForCLient();
 
                 return true;
             }

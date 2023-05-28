@@ -4,7 +4,7 @@
 # PROJECT
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-set( CLIENT_VERSION 0.1.0 )
+set( CLIENT_VERSION 1.0.0 )
 
 project( "Client" VERSION ${CLIENT_VERSION} LANGUAGES C CXX )
 
@@ -19,17 +19,8 @@ else ( DEFINED PLATFORM )
 endif ( DEFINED PLATFORM )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# DEPENDENCIES
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-# Application.Core
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # MODULES
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-# Core
-add_subdirectory( "${CMAKE_CURRENT_SOURCE_DIR}/core" )
 
 # Platform
 add_subdirectory( "${CMAKE_CURRENT_SOURCE_DIR}/${PLATFORM}" )

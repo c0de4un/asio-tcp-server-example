@@ -23,8 +23,16 @@ static constexpr const int RESULT_OK = 0;
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// Include asio
+#ifndef APP_CLIENT_WIN_ASIO_HPP
+    #include <app/client/windows/asio.hpp>
+#endif /// !APP_CLIENT_WIN_ASIO_HPP
+
 // Include STL
 #include <iostream>
+#include <cassert>
+#include <exception>
+#include <string> // already included by exception, but kept for clarity
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 

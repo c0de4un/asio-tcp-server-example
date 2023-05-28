@@ -34,8 +34,6 @@ set( CLIENT_WIN_PRIVATE_DIR "${CLIENT_WIN_DIR}/private/app/client/windows/" )
 set( CLIENT_WIN_HEADERS
     "${CLIENT_WIN_PUBLIC_DIR}asio.hpp"
     "${CLIENT_WIN_PUBLIC_DIR}main.hpp"
-    "${CLIENT_WIN_PUBLIC_DIR}WinClient.hpp"
-    "${CLIENT_WIN_PUBLIC_DIR}WinServerConnection.hpp"
 )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -44,8 +42,6 @@ set( CLIENT_WIN_HEADERS
 
 set( CLIENT_WIN_SOURCES
     "${CLIENT_WIN_PRIVATE_DIR}main.cpp"
-    "${CLIENT_WIN_PRIVATE_DIR}WinClient.cpp"
-    "${CLIENT_WIN_PRIVATE_DIR}WinServerConnection.cpp"
 )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -81,11 +77,6 @@ target_include_directories( client PRIVATE ${CLIENT_WIN_INCLUDE_DIR} )
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # LINK
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-# Application.Core
-
-# Application.Client.Core
-target_link_libraries( client client_core )
 
 # Boost.ASIO
 target_include_directories( client PRIVATE ${BOOST_INCLUDE_DIR} )
